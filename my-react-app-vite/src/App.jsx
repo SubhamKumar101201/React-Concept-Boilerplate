@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import ColorChange from './components/BgChange';
+import PasswordGenarator from './components/PasswordGenarator';
 
 const App = () => {
   return (
-    <ColorChange/>
+        <>
+        <PasswordGenarator/>
+        </>
   );
 };
 
