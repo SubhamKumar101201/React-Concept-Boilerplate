@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import PasswordGenarator from './components/PasswordGenarator';
+import CurrencyConvertor from './components/CurrencyConvertor';
 
 const App = () => {
   return (
         <>
-        <PasswordGenarator/>
+          <CurrencyConvertor/>
         </>
   );
 };
