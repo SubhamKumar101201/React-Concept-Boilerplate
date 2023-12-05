@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import CurrencyConvertor from './components/CurrencyConvertor';
+import Header from './components/CompanyWebsite/Header';
+import { Outlet } from 'react-router-dom';
+import Footer from './components/CompanyWebsite/Footer';
 
 const App = () => {
   return (
         <>
-          <CurrencyConvertor/>
+          <Header/>
+          <Outlet/>
+          <Footer/>
         </>
   );
 };
