@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Header from './components/CompanyWebsite/Header';
-import { Outlet } from 'react-router-dom';
-import Footer from './components/CompanyWebsite/Footer';
+import UserContextProvider from './context/UserContextProvider';
+import Login from './components/MiniContext/Login';
+import Profile from './components/MiniContext/Profile';
 
 const App = () => {
   return (
-        <>
-          <Header/>
-          <Outlet/>
-          <Footer/>
-        </>
+        <UserContextProvider>
+          <Profile/>
+          <Login/>
+        </UserContextProvider>
   );
 };
 
