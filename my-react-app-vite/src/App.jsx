@@ -1,43 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider } from './context/Theme';
-import Theme from './components/ThemeSwitcher/Theme';
-import Card from './components/ThemeSwitcher/Card';
+import { TodoProvider } from './context/TodoContext';
+import TodoForm from './components/TodoForm';
+import TodoItem from './components/TodoItem';
 
 const App = () => {
-  const [themeMode, setThemeMode] = useState('light')
+ const [todos, setTodos] = useState([])
 
-  const lightTheme = () => {
-    setThemeMode('light')
+ const addTodo = (todo) => {
+    setTodos((prev) => [{id:Date.now(),...todo},...prev])
+ }
+
+ const updateTodo = (id,todo) => {
+    setTodos((prev) => prev.map((prevTodo) => (prevTodo.id === id ? todo : prevTodo)))
+ }
+ 
+ const deleteTodo = (id) =>{
+  setTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== id))
+}
+
+const toggleComplete = (id) =>{
+  setTodos((prev) => prev.map((prevTodo) => prevTodo.id === id ? {...prevTodo,completed: !prevTodo.completed} : prevTodo))
+}
+ 
+useEffect(() => {
+  const todos = JSON.parse(localStorage.getItem('todos'))
+
+  if(todos && todos.length) {
+    setTodos(todos)
   }
+}, [])
 
-  const darkTheme = () => {
-    setThemeMode('dark')
-  }
+useEffect(() => {
+  localStorage.setItem("todos",JSON.stringify(todos))
+},[todos])
 
-  useEffect(() => {
-    document.querySelector('html').classList.remove('light', 'dark')
-    document.querySelector('html').classList.add(themeMode)
-  }, [themeMode]);
-
-  return (
-    <ThemeProvider value={{ themeMode, darkTheme, lightTheme }}>
-
-      <div className="flex flex-wrap mt-4 min-h-screen items-center">
-        <div className="w-full">
-          <div className="w-full max-w-sm mx-auto flex justify-end mb-4">
-            <Theme />
-          </div>
-
-          <div className="flex flex-col gap-y-2 w-full max-w-sm mx-auto">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-          </div>
-        </div>
-      </div>
-
-    </ThemeProvider>
+ return (
+   <TodoProvider value={{todos,addTodo,updateTodo,deleteTodo,toggleComplete}}>
+   <div className="bg-[#172842] min-h-screen py-8">
+                <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
+                    <h1 className="text-2xl font-bold text-center mb-8 mt-2">Manage Your Todos</h1>
+                    <div className="mb-4">
+                        <TodoForm/>
+                    </div>
+                    <div className="flex flex-wrap gap-y-3">
+                       {todos.map((todo) => (
+                        <div key={todo.id}
+                        className='w-full'>
+                          <TodoItem todo={todo} />
+                        </div>
+                       ))}
+                    </div>
+                </div>
+            </div>
+   </TodoProvider>
   );
 };
 
